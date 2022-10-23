@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate #para crear cookie de inicio de sesion
 from django.db import IntegrityError
+from .forms import TaskForm
 
 # Create your views here.
 def home(request):
@@ -43,7 +44,23 @@ def tasks(request):
     return render(request, 'tasks.html')
 
 def create_task(request):
-    return render(request, 'create_task.html')
+    if request.method == 'GET':
+        return render(request, 'create_task.html',{
+        'form': TaskForm
+    })
+    else:
+        try:
+            form = TaskForm(request.POST)
+            new_task = form.save(commit=False)
+            new_task.user = request.user
+            new_task.save()
+            return redirect('tasks')
+        except ValueError:
+            return render(request, 'create_task.html', {
+                'form': TaskForm,
+                'error': 'Please provide valida data'
+            })
+
 
 def signout(request):
     logout(request)
