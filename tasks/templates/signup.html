@@ -10,16 +10,20 @@
     <title>{{mytitle}}</title>
 </head>
 <body>
-    <h1>Sign up</h1>
-    <br>
 
-    {{error}}
-
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button>Signup</button>
-    </form>
+<main class="container">
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="POST" class="card card-body">
+            <h1>Sign up</h1>
+            {{error}}
+            {% csrf_token %}
+            {{form}}
+            <button>Signup</button>
+        </form>
+    </div>
+</div>
+</main>
 </body>
 </html>
 
